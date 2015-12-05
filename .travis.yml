@@ -1,0 +1,4 @@
+language: objective-c
+xcode_project: XcodeIDEKit.xcodeproj
+xcode_scheme: XcodeIDEKit
+xcode_sdk: macosx
