@@ -617,12 +617,12 @@
 @property(readonly) unsigned long long totalNumberOfErrors;
 @property(readonly) unsigned long long totalNumberOfTestFailures;
 - (void)setSecondaryLocations:(id)arg1;
-@property(readonly) NSArray *secondaryLocations;
+//@property(readonly) NSArray *secondaryLocations;
 @property(readonly) NSString *additionalDescription;
 - (void)setCategoryIdentifier:(id)arg1;
-@property(readonly) NSString *categoryIdentifier;
+//@property(readonly) NSString *categoryIdentifier;
 - (void)setShortTitle:(id)arg1;
-@property(readonly) NSString *shortTitle;
+//@property(readonly) NSString *shortTitle;
 - (void)logRecorder:(id)arg1 addSectionTextRange:(struct _NSRange)arg2;
 - (void)logRecorder:(id)arg1 setSectionTextRange:(struct _NSRange)arg2;
 @property(readonly) NSString *logMessageString;
