@@ -119,7 +119,7 @@
 
 
 - (IDEIssue *)IDEIssueForXKIssue:(XKIssue *)XKIssue {
-    if (XKIssue.IDEIssue != nil) return XKIssue.IDEIssue;
+    if (XKIssue.IDEIssue == nil) return XKIssue.IDEIssue;
     
     for (IDEIssue *issue in self.issues) {
         if ([issue.fullMessage isEqualToString:XKIssue.title]) {
