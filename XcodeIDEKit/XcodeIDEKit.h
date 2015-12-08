@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
+#import "XKWindowsController.h"
 #import "XKWorkspaceWindowController.h"
 #import "XKIssueManager.h"
 #import "XKIssue.h"

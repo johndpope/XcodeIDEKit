@@ -8,6 +8,7 @@
 
 #import "XKWorkspaceWindowController.h"
 #import "XKIssueManager.h"
+#import "XKIDEClassNames.h"
 
 @interface XKWorkspaceWindowController ()
 @property (readwrite) IDEWorkspaceWindowController *IDEWorkspaceWindowController;
@@ -18,7 +19,7 @@
 @implementation XKWorkspaceWindowController
 
 - (instancetype)initWithNSWindowController:(NSWindowController *)windowController {
-    if (![windowController isKindOfClass:NSClassFromString(@"IDEWorkspaceWindowController")]) return nil;
+    if (![windowController isKindOfClass:NSClassFromString(IDEWorkspaceWindowControllerClassName)]) return nil;
     self = [super init];
     if (self) {
         _IDEWorkspaceWindowController = (IDEWorkspaceWindowController *)windowController;
@@ -29,7 +30,7 @@
 
 
 - (nonnull IDEWorkspace *)IDEWorkspace {
-    Class controllerClass = NSClassFromString(@"IDEWorkspaceWindowController");
+    Class controllerClass = NSClassFromString(IDEWorkspaceWindowControllerClassName);
     Ivar ivar = class_getInstanceVariable(controllerClass, "_workspace");
     IDEWorkspace *workspace = object_getIvar(self.IDEWorkspaceWindowController, ivar);
     

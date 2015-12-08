@@ -18,6 +18,10 @@
 		A360E1611C11FADB00D20771 /* XKWorkspaceWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = A360E1581C11FADB00D20771 /* XKWorkspaceWindowController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A360E1621C11FADB00D20771 /* XKWorkspaceWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A360E1591C11FADB00D20771 /* XKWorkspaceWindowController.m */; };
 		A360E1771C12632200D20771 /* IDEFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A360E1761C12632200D20771 /* IDEFoundation.framework */; };
+		A3F9E1231C1730AE00056A7D /* XKWindowsController.h in Headers */ = {isa = PBXBuildFile; fileRef = A3F9E1211C1730AE00056A7D /* XKWindowsController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A3F9E1241C1730AE00056A7D /* XKWindowsController.m in Sources */ = {isa = PBXBuildFile; fileRef = A3F9E1221C1730AE00056A7D /* XKWindowsController.m */; };
+		A3F9E1271C17330800056A7D /* XKIDEClassNames.h in Headers */ = {isa = PBXBuildFile; fileRef = A3F9E1251C17330800056A7D /* XKIDEClassNames.h */; };
+		A3F9E1281C17330800056A7D /* XKIDEClassNames.m in Sources */ = {isa = PBXBuildFile; fileRef = A3F9E1261C17330800056A7D /* XKIDEClassNames.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +49,10 @@
 		A360E1581C11FADB00D20771 /* XKWorkspaceWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XKWorkspaceWindowController.h; sourceTree = "<group>"; };
 		A360E1591C11FADB00D20771 /* XKWorkspaceWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XKWorkspaceWindowController.m; sourceTree = "<group>"; };
 		A360E1761C12632200D20771 /* IDEFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IDEFoundation.framework; path = ../../../../../../Applications/Xcode.app/Contents/Frameworks/IDEFoundation.framework; sourceTree = "<group>"; };
+		A3F9E1211C1730AE00056A7D /* XKWindowsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XKWindowsController.h; sourceTree = "<group>"; };
+		A3F9E1221C1730AE00056A7D /* XKWindowsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XKWindowsController.m; sourceTree = "<group>"; };
+		A3F9E1251C17330800056A7D /* XKIDEClassNames.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XKIDEClassNames.h; sourceTree = "<group>"; };
+		A3F9E1261C17330800056A7D /* XKIDEClassNames.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XKIDEClassNames.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +106,10 @@
 				A360E1581C11FADB00D20771 /* XKWorkspaceWindowController.h */,
 				A360E1591C11FADB00D20771 /* XKWorkspaceWindowController.m */,
 				A360E13C1C11FABB00D20771 /* Info.plist */,
+				A3F9E1211C1730AE00056A7D /* XKWindowsController.h */,
+				A3F9E1221C1730AE00056A7D /* XKWindowsController.m */,
+				A3F9E1251C17330800056A7D /* XKIDEClassNames.h */,
+				A3F9E1261C17330800056A7D /* XKIDEClassNames.m */,
 			);
 			path = XcodeIDEKit;
 			sourceTree = "<group>";
@@ -130,6 +142,8 @@
 				A360E1611C11FADB00D20771 /* XKWorkspaceWindowController.h in Headers */,
 				A360E15F1C11FADB00D20771 /* XKIssueManager.h in Headers */,
 				A360E15C1C11FADB00D20771 /* XcodePrivate.h in Headers */,
+				A3F9E1231C1730AE00056A7D /* XKWindowsController.h in Headers */,
+				A3F9E1271C17330800056A7D /* XKIDEClassNames.h in Headers */,
 				A360E15D1C11FADB00D20771 /* XKIssue.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -231,7 +245,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				A360E1601C11FADB00D20771 /* XKIssueManager.m in Sources */,
+				A3F9E1281C17330800056A7D /* XKIDEClassNames.m in Sources */,
 				A360E15E1C11FADB00D20771 /* XKIssue.m in Sources */,
+				A3F9E1241C1730AE00056A7D /* XKWindowsController.m in Sources */,
 				A360E1621C11FADB00D20771 /* XKWorkspaceWindowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
