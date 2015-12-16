@@ -10,6 +10,7 @@
 
 #import "XKWindowsController.h"
 #import "XKWorkspaceWindowController.h"
+#import "XKActivityController.h"
 #import "XKIssueManager.h"
 #import "XKIssue.h"
 

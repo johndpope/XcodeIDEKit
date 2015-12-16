@@ -718,4 +718,340 @@
 
 @end
 
+@class IDEActivityReport;
+@class IDEActivityViewDataSource;
+@class IDEActivityReportManager;
 
+@interface IDEActivityView : NSView
+{
+    NSView *_layerView;
+    CALayer *_reportLayerContainerLayer;
+    CALayer *_backgroundLayer;
+    CALayer *_reportLayerTree;
+    IDEWorkspaceWindowController *_workspaceWindowController;
+    NSMapTable *_strongReportsToStrongReportLayers;
+    IDEActivityViewDataSource *_dataSource;
+    struct {
+        unsigned int setup:1;
+        unsigned int displayedReportIsCompleted:1;
+        unsigned int forcedDisplayedReportUpdateIsScheduled:1;
+        unsigned int _reserved:5;
+    } _flags;
+}
+
++ (struct CGSize)scaledSizeWithMaximumWidth:(double)arg1 forToolbarDisplayMode:(unsigned long long)arg2 sizeMode:(unsigned long long)arg3;
++ (struct CGSize)defaultSizeForToolbarDisplayMode:(unsigned long long)arg1 sizeMode:(unsigned long long)arg2;
++ (void)initialize;
+@property(retain, nonatomic) IDEWorkspaceWindowController *workspaceWindowController; // @synthesize workspaceWindowController=_workspaceWindowController;
+- (id)accessibilityHitTest:(struct CGPoint)arg1;
+- (BOOL)accessibilityIsAttributeSettable:(id)arg1;
+- (id)accessibilityAttributeValue:(id)arg1;
+- (id)accessibilityAttributeNames;
+- (BOOL)accessibilityIsIgnored;
+- (void)openLogNavigator;
+- (void)openActivityPopUp;
+- (void)cancelDisplayedReport:(id)arg1;
+- (void)stopObservingActivityReports;
+- (void)activityReportManagerDidInvalidateForActivityViewDataSource:(id)arg1;
+- (void)activityViewDataSource:(id)arg1 activityReportDidComplete:(id)arg2;
+- (void)activityReportListDidChangeForActivityViewDataSource:(id)arg1;
+- (void)updateActionIndicators;
+- (void)window:(id)arg1 didChangeActivationState:(long long)arg2;
+- (void)makeSureIssuesLayerIsVisible;
+- (void)viewDidMoveToSuperview;
+- (void)viewDidMoveToWindow;
+- (void)setupOrTearDown;
+- (void)tearDown;
+- (void)setup;
+- (id)_botCompositeCategory;
+- (void)teardownLayers;
+- (void)setupLayers;
+- (id)_buildMultiActionIndicatorLayer;
+- (id)_buildAllStatusLayer;
+- (id)_buildReportLayerTree;
+- (id)_backgroundLayer;
+- (void)_updateCurrentActivityReportForWindowActivationState;
+- (id)clickableLayerAtPoint:(struct CGPoint)arg1;
+- (struct CGRect)insetReportLayerBounds;
+- (struct CGRect)insetRootLayerBounds;
+@property struct CGSize contentSize;
+- (void)sizeToFitToolbarDisplayMode:(unsigned long long)arg1 sizeMode:(unsigned long long)arg2;
+- (void)activityViewDataSource:(IDEActivityViewDataSource *)arg1 countDidChangeForBotStatusCategory:(id)arg2;
+- (void)activityViewDataSource:(IDEActivityViewDataSource *)arg1 workspaceRepresentingTypeStringDidChangeTo:(id)arg2;
+- (void)activityViewDataSource:(IDEActivityViewDataSource *)arg1 issueCountDidChangeForIssueCategory:(id)arg2;
+- (void)unschedulePendingForcedDisplayedReportUpdate;
+- (void)scheduleForcedDisplayedReportUpdate;
+- (void)chooseAndDisplayNextActivityReportAfterIdlePreDelay;
+- (void)chooseAndDisplayNextActivityReportAfterReportCompleted;
+- (void)chooseAndDisplayNextActivityReportAfterMinimumTimeExpiredOrDelayExpired;
+- (void)chooseAndDisplayNextActivityReportAfterChangeInReports;
+- (id)nextActivityReportToDisplay;
+- (void)delayedSetDisplayedReport:(IDEActivityReport *)arg1;
+- (void)activityViewDataSource:(id)arg1 displayDelayTimeWasMetForActivityReport:(id)arg2;
+- (void)tryToDisplayReport:(IDEActivityReport *)arg1;
+- (void)setDisplayedReport:(IDEActivityReport *)arg1;
+- (id)activityReportLayerForReport:(IDEActivityReport *)arg1;
+- (void)setActivityReportLayer:(id)arg1 forReport:(id)arg2;
+- (void)activityViewDataSource:(id)arg1 minimumDisplayTimeWasMetForActivityReport:(id)arg2;
+@property(readonly) IDEActivityReport *displayedReport;
+- (id)activityReports;
+- (id)orderedActivityReports;
+- (IDEActivityReportManager *)activityReportManager;
+- (id)workspaceTabController;
+- (id)workspace;
+- (id)workspaceDocument;
+- (void)primitiveInvalidate;
+- (id)initWithFrame:(struct CGRect)arg1;
+- (id)initWithCoder:(id)arg1;
+- (void)activityViewCommonInit;
+
+// Remaining properties
+@property(readonly, copy) NSString *debugDescription;
+@property(readonly, copy) NSString *description;
+@property(readonly) unsigned long long hash;
+@property(readonly) Class superclass;
+@property(readonly, nonatomic, getter=isValid) BOOL valid;
+
+@end
+
+typedef void (^CDUnknownBlockType)(void);
+
+@interface IDEActivityViewDataSource : NSObject
+{
+    IDEWorkspaceDocument *_workspaceDocument;
+    NSMutableSet *_registeredConsumers;
+    BOOL _haveRegisteredFirstConsumer;
+    NSString *_debugName;
+    NSMapTable *_strongReportToStrongMinimumTimeTimerMap;
+    NSMutableSet *_activityReportsUnderMinimumDisplayTime;
+    NSMutableArray *_backgroundActivitiesLongerThanDelay;
+    NSMapTable *_strongDelayedInvocationsByStrongReport;
+    NSMapTable *_strongIssueCategoryToIssueCountByURLTable;
+    NSArray *_issueCategories;
+    NSArray *_botStatusCategories;
+}
+
++ (void)initialize;
+@property(copy) NSString *debugName; // @synthesize debugName=_debugName;
+@property(readonly, copy) NSArray *botStatusCategories; // @synthesize botStatusCategories=_botStatusCategories;
+@property(copy) NSArray *issueCategories; // @synthesize issueCategories=_issueCategories;
+@property(readonly) IDEWorkspaceDocument *workspaceDocument; // @synthesize workspaceDocument=_workspaceDocument;
+- (void)openIssuesNavigator;
+- (void)openTestNavigator;
+- (void)stopObservingActivityReports;
+- (void)startObservingActivityReports;
+- (void)tearDown;
+- (void)stopObservingIssues;
+- (void)startObservingIssues;
+- (void)updateIssuesForAllURLsWithIssues;
+- (void)updateNumberOfIssuesForURL:(id)arg1;
+- (void)_updateCategory:(id)arg1 withCurrent:(unsigned long long)arg2 andNew:(unsigned long long)arg3;
+- (id)issuesForDocumentURLOrSharedPlaceholderURL:(id)arg1;
+- (id)activityViewLocalURLForIssueManagerURL:(id)arg1;
+- (id)sharedPlaceholderURLForIssuesWithNoDocument;
+- (void)setNumberOfIssues:(long long)arg1 forURL:(id)arg2 inCategory:(id)arg3;
+- (long long)numberOfIssuesForURL:(id)arg1 inCategory:(id)arg2;
+- (id)oldestKnownBackgroundActivityReportThatHasMetDisplayDelayTime;
+- (BOOL)haveReachedDisplayDelayTimeForActivityReport:(id)arg1;
+- (void)startTrackingDisplayDelayTimeIfNeededForReport:(id)arg1;
+- (void)startPreDisplayDelayValidatorForReport:(id)arg1;
+- (void)startTrackingMinimumDisplayTimeForActivityReport:(id)arg1;
+- (void)stopTrackingMinimumDisplayTimeForActivityReport:(id)arg1;
+- (void)startMinimumDisplayTimeTimerForActivityReport:(id)arg1;
+- (id)minimumDisplayTimeTimerForActivityReport:(id)arg1;
+- (void)minimumTimeTimerForActivityReportDidExpire:(id)arg1;
+- (void)minimumTimeForActivityReportDidExpire:(id)arg1;
+- (void)setHaveReachedMinimumDisplayTime:(BOOL)arg1 forActivityReport:(id)arg2;
+- (BOOL)haveReachedMinimumDisplayTimeForActivityReport:(id)arg1;
+- (void)enumerateConsumersUsingBlock:(CDUnknownBlockType)arg1;
+- (void)unregisterConsumer:(id)arg1;
+- (void)registerConsumer:(id)arg1;
+@property(readonly) NSArray *orderedActivityReportsForListStylePresentation;
+- (id)effectiveDebugName;
+- (id)activityReports;
+@property(readonly) NSArray *orderedActivityReports;
+- (id)activityReportManager;
+- (id)workspace;
+- (id)dataSourceByCloningReportTimingData;
+- (void)primitiveInvalidate;
+- (id)initWithWorkspaceDocument:(id)arg1;
+
+// Remaining properties
+@property(readonly, copy) NSString *debugDescription;
+@property(readonly, copy) NSString *description;
+@property(readonly) unsigned long long hash;
+@property(readonly) Class superclass;
+@property(readonly, nonatomic, getter=isValid) BOOL valid;
+
+@end
+
+
+@class IDEActivityReport;
+@interface IDEActivityReportManager : NSObject
+{
+    IDEActivityReport *_lastCompletedUserVisiblePersistentSchemeBasedReport;
+    IDEActivityReport *_lastCompletedUserVisibleSchemeBasedReport;
+    IDEActivityReport *_lastCompletedUserVisibleReport;
+    IDEWorkspaceDocument *_workspaceDocument;
+    NSSet *_activityReporterObservingTokens;
+    NSSet *_activityReporters;
+    NSMutableSet *_observers;
+    NSArray *_orderedActivityReports;
+    NSSet *_activityReports;
+    BOOL _lastCompletedUserVisiblePersistentSchemeBasedReportShouldBeInvalidated;
+}
+
++ (void)initialize;
++ (unsigned long long)assertionBehaviorForKeyValueObservationsAtEndOfEvent;
+@property(nonatomic) BOOL lastCompletedUserVisiblePersistentSchemeBasedReportShouldBeInvalidated; // @synthesize lastCompletedUserVisiblePersistentSchemeBasedReportShouldBeInvalidated=_lastCompletedUserVisiblePersistentSchemeBasedReportShouldBeInvalidated;
+@property(retain, nonatomic) IDEActivityReport *lastCompletedUserVisiblePersistentSchemeBasedReport; // @synthesize lastCompletedUserVisiblePersistentSchemeBasedReport=_lastCompletedUserVisiblePersistentSchemeBasedReport;
+@property(copy, nonatomic) NSArray *orderedActivityReports; // @synthesize orderedActivityReports=_orderedActivityReports;
+@property(copy, nonatomic) NSSet *activityReports; // @synthesize activityReports=_activityReports;
+@property(readonly) IDEWorkspaceDocument *workspaceDocument; // @synthesize workspaceDocument=_workspaceDocument;
+- (void)reportDidComplete:(id)arg1;
+- (void)stopObservingReportForCompletion:(id)arg1;
+- (void)startObservingReportForCompletion:(id)arg1;
+- (id)addObserver:(CDUnknownBlockType)arg1;
+- (void)removeObserverBlock:(CDUnknownBlockType)arg1;
+- (void)restoreLastCompletedUserVisiblePersistentSchemeBasedReportFrom:(id)arg1;
+@property(retain) IDEActivityReport *lastCompletedUserVisibleSchemeBasedReport; // @synthesize lastCompletedUserVisibleSchemeBasedReport=_lastCompletedUserVisibleSchemeBasedReport;
+- (void)setLastCompletedUserVisibleReport:(IDEActivityReport *)arg1;
+@property(readonly) IDEActivityReport *lastCompletedUserVisibleReport; // @synthesize lastCompletedUserVisibleReport=_lastCompletedUserVisibleReport;
+- (void)rebuildActivityReportCaches;
+- (void)handleUpdateFromActivityReporter:(id)arg1;
+@property(readonly) NSSet *activityReporters;
+- (void)loadActivityReporters;
+- (void)primitiveInvalidate;
+- (id)initWithWorkspaceDocument:(id)arg1;
+
+// Remaining properties
+@property(readonly, copy) NSString *debugDescription;
+@property(readonly, copy) NSString *description;
+@property(readonly) unsigned long long hash;
+@property(readonly) Class superclass;
+@property(readonly, nonatomic, getter=isValid) BOOL valid;
+
+@end
+
+
+@class IDEActivityReportStringSegment;
+@interface IDEActivityReport : NSObject
+{
+    int _options;
+    NSString *_title;
+    NSArray *_titleSegments;
+    NSString *_completionSummaryString;
+    NSArray *_completionSummaryStringSegments;
+    long long _progress;
+    double _timestamp;
+    double _displayPriority;
+    unsigned long long _fileIOPriority;
+    double _fileIOThrottleFactor;
+}
+
++ (id)keyPathsForValuesAffectingPaused;
++ (BOOL)automaticallyNotifiesObserversOfFileIOThrottleFactor;
++ (id)keyPathsForValuesAffectingCompleted;
++ (unsigned long long)assertionBehaviorForKeyValueObservationsAtEndOfEvent;
++ (unsigned long long)assertionBehaviorAfterEndOfEventForSelector:(SEL)arg1;
++ (void)initialize;
+@property(readonly) double fileIOThrottleFactor; // @synthesize fileIOThrottleFactor=_fileIOThrottleFactor;
+@property unsigned long long fileIOPriority; // @synthesize fileIOPriority=_fileIOPriority;
+@property double displayPriority; // @synthesize displayPriority=_displayPriority;
+@property(readonly) double timestamp; // @synthesize timestamp=_timestamp;
+@property long long progress; // @synthesize progress=_progress;
+@property(copy) NSArray *completionSummaryStringSegments; // @synthesize completionSummaryStringSegments=_completionSummaryStringSegments;
+@property(copy) NSString *completionSummaryString; // @synthesize completionSummaryString=_completionSummaryString;
+@property(copy, nonatomic) NSArray<IDEActivityReportStringSegment *> *titleSegments; // @synthesize titleSegments=_titleSegments;
+@property(copy, nonatomic) NSString *title; // @synthesize title=_title;
+@property(readonly) int options; // @synthesize options=_options;
+@property(readonly) NSString *stringValue;
+@property(readonly) BOOL paused;
+- (void)_setFileIOThrottleFactor:(double)arg1;
+@property(readonly, getter=isUserVisible) BOOL userVisible;
+@property(readonly, getter=isFileIOIntensive) BOOL fileIOIntensive;
+@property(readonly, getter=isPersistent) BOOL persistent;
+@property(readonly) BOOL disableTitleAnimation;
+@property(readonly) BOOL shouldDisplayImmediately;
+@property(readonly) BOOL hidesProgress;
+@property(readonly, getter=isSchemeBased) BOOL schemeBased;
+@property(readonly, getter=isUserRequested) BOOL userRequested;
+@property(readonly, getter=isCancelable) BOOL cancelable;
+@property(readonly, getter=isCompleted) BOOL completed;
+@property(readonly) NSDictionary *dictionaryRepresentation;
+@property(readonly, copy) NSString *description;
+- (void)primitiveInvalidate;
+- (id)init;
+- (id)initWithDictionaryRepresentation:(id)arg1;
+- (id)initWithTitle:(id)arg1 titleSegments:(id)arg2 options:(int)arg3 fileIOPriority:(unsigned long long)arg4 fileIOCoordinatorBlock:(CDUnknownBlockType)arg5;
+- (id)_initWithTitle:(id)arg1 titleSegments:(id)arg2 options:(int)arg3 fileIOPriority:(unsigned long long)arg4 fileIOCoordinatorBlock:(CDUnknownBlockType)arg5 unarchived:(BOOL)arg6;
+- (void)setProgressAsNSNumber:(id)arg1;
+
+// Remaining properties
+@property(readonly, copy) NSString *debugDescription;
+@property(readonly) unsigned long long hash;
+@property(readonly) Class superclass;
+@property(readonly, nonatomic, getter=isValid) BOOL valid;
+
+@end
+
+@interface IDEActivityReporter : NSObject
+{
+    IDEWorkspace *_workspace;
+    NSArray *_activityReports;
+    NSImage *_image;
+}
+
++ (void)initialize;
++ (id)activityReporterWithExtension:(id)arg1 workspace:(id)arg2;
+@property(readonly) IDEWorkspace *workspace; // @synthesize workspace=_workspace;
+- (void)primitiveInvalidate;
+@property(readonly) NSImage *image;
+- (IDEActivityReport *)newActivityReportWithTitle:(NSString *)arg1 options:(int)arg2;
+- (IDEActivityReport *)newActivityReportWithTitle:(NSString *)arg1 options:(int)arg2 image:(id)arg3;
+- (IDEActivityReport *)newActivityReportWithTitle:(NSString *)arg1 options:(int)arg2 isUserVisible:(BOOL)arg3 fileIOPriority:(unsigned long long)arg4 fileIOCoordinatorBlock:(CDUnknownBlockType)arg5;
+- (IDEActivityReport *)newActivityReportWithTitle:(id)arg1 options:(int)arg2 isUserVisible:(BOOL)arg3 image:(id)arg4 fileIOPriority:(unsigned long long)arg5 fileIOCoordinatorBlock:(CDUnknownBlockType)arg6;
+- (id)initWithWorkspace:(id)arg1;
+
+// Remaining properties
+@property(readonly) NSArray *activityReports; // @dynamic activityReports;
+@property(readonly, copy) NSString *debugDescription;
+@property(readonly, copy) NSString *description;
+@property(readonly) unsigned long long hash;
+@property(readonly) NSMutableArray *mutableActivityReports; // @dynamic mutableActivityReports;
+@property(readonly) Class superclass;
+@property(readonly, nonatomic, getter=isValid) BOOL valid;
+
+@end
+
+
+@interface IDEActivityReportStringSegment : NSObject
+
++ (id)activityReportStringSegmentWithDictionaryRepresentation:(id)arg1;
+@property(readonly) NSString *frontSeparator;
+@property(readonly) NSString *backSeparator;
+@property(readonly) double priority;
+@property(readonly) NSString *stringValue;
+@property(readonly) NSDictionary *dictionaryRepresentation;
+@property(readonly) long long segmentType;
+- (id)description;
+- (id)attributedStringValueWithDefaultAttributes:(id)arg1 hasFrontSeparator:(BOOL)arg2 hasBackSeparator:(BOOL)arg3;
+- (id)initWithDictionaryRepresentation:(NSDictionary *)arg1;
+- (id)initWithString:(NSString *)arg1 priority:(double)arg2;
+- (id)initWithString:(id)arg1 priority:(double)arg2 frontSeparator:(NSString *)arg3 backSeparator:(NSString *)arg4;
+
+@end
+
+@interface IDEActivityReportDateStringSegment : IDEActivityReportStringSegment
+
+@property(readonly) NSDateFormatterStyle timeStyle;
+@property(readonly) NSDateFormatterStyle dateStyle;
+@property(readonly) NSDate *date;
+- (id)dictionaryRepresentation;
+- (long long)segmentType;
+- (id)stringValue;
+- (id)initWithDictionaryRepresentation:(NSDictionary *)arg1;
+- (id)initWithDate:(NSDate *)arg1 priority:(double)arg2 dateStyle:(NSDateFormatterStyle)arg3 timeStyle:(NSDateFormatterStyle)arg4;
+- (id)initWithDate:(NSDate *)arg1 priority:(double)arg2 frontSeparator:(NSString *)arg3 backSeparator:(NSString *)arg4 dateStyle:(NSDateFormatterStyle)arg5 timeStyle:(NSDateFormatterStyle)arg6;
+
+@end
