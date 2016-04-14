@@ -86,7 +86,6 @@
     if (!reporter) return;
     
     [reporter.mutableActivityReports addObject:report.IDEActivityReport];
-    [[self activityReportManager] startObservingReportForCompletion:report.IDEActivityReport];
 }
 
 
@@ -95,9 +94,10 @@
     if (!reporter) return;
     
     report.completed = YES;
+    [report.IDEActivityReport performSelector:@selector(invalidate)];
+    [[self activityReportManager] setLastCompletedUserVisibleSchemeBasedReport:report.IDEActivityReport];
     [[self activityReportManager] reportDidComplete:report.IDEActivityReport];
     [reporter.mutableActivityReports removeObject:report.IDEActivityReport];
-    
 }
 
 
